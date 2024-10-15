@@ -88,21 +88,29 @@ npm start
 ### 프로젝트 구조 설명
 
 public/: 앱의 기본적인 HTML 구조를 정의하고, 로딩 화면 이미지를 포함.
+
 src/: 애플리케이션의 핵심 로직 및 컴포넌트가 위치.
+
 components/: 페이지별, 기능별로 나눠진 React 컴포넌트들.
+
 assets/: 아이콘 및 이미지 파일들이 포함된 디렉토리.
+
 styles/: 각 컴포넌트별 CSS 스타일 파일.
 
 ### 주요 컴포넌트 설명
 
 Chat.js: 사용자와 챗봇 간의 대화를 관리하는 컴포넌트.
+
 BottomNavigation.js: 하단 네비게이션 바로 각 페이지 간의 이동을 담당.
+
 Header.js: 상단 헤더 컴포넌트로 햄버거 메뉴를 통해 지난 채팅 기록 확인 가능.
 
 ### 사용된 주요 기술 스택
 
 React.js: UI 컴포넌트 기반 프레임워크.
+
 CSS3: 사용자 인터페이스의 스타일링.
+
 PWA: Progressive Web App 설정을 위해 서비스 워커 사용.
 
 ## Learn More
