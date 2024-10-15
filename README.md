@@ -3,8 +3,7 @@
 
 >백문불여일견은 AI를 활용하여 국가유산에 대한 접근성을 높이고
 >
-사용자들이 보다 쉽게 국가유산을 경험할 수 있는 서비스입니다.
->
+>사용자들이 보다 쉽게 국가유산을 경험할 수 있는 서비스입니다.
 >
 ## 디렉토리 구조
 
@@ -87,33 +86,3 @@ Header.js: 상단 헤더 컴포넌트로 햄버거 메뉴를 통해 지난 채�
 - CSS3: 사용자 인터페이스의 스타일링.
 
 - PWA: Progressive Web App 설정을 위해 서비스 워커 사용.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
