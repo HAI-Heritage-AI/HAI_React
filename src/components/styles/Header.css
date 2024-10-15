@@ -1,0 +1,15 @@
+.header {
+  height: 60px;  /* 하단 메뉴와 동일한 높이 */
+  display: flex;
+  align-items: center;
+  padding-left: 10px;  /* 왼쪽 패딩을 조정하여 햄버거 메뉴를 오른쪽으로 이동 */
+  background-color: #f3e1c6;
+  border-bottom: 1px solid #ddd;
+}
+
+.hamburger-menu {
+  cursor: pointer;
+  font-size: 28px;  /* 햄버거 메뉴 크기 */
+  margin-left: 10px;  /* 햄버거 메뉴를 오른쪽으로 띄우기 위한 마진 */
+  margin-top: 2px;
+}

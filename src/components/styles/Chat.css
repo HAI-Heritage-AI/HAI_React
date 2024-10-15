@@ -1,0 +1,84 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: calc(100vh - 120px); /* 상단과 하단 메뉴바 공간 제외 */
+  padding: 10px;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto; /* 스크롤 가능하게 설정 */
+  padding-bottom: 20px;
+}
+
+.chat-bubble {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 50%; /* 메시지 길이에 맞게 크기 조절 */
+  word-wrap: break-word; /* 긴 단어는 자동 줄바꿈 */
+  display: flex; /* 박스를 텍스트 길이에 맞게 조정 */
+  justify-content: flex-start; /* 왼쪽에서 시작 */
+}
+
+.user {
+  background-color: #ebd4ab;
+  align-self: flex-end; /* 오른쪽 정렬 */
+  text-align: right;
+  margin-left: auto; /* 오른쪽에 고정 */
+  border-bottom-right-radius: 0; /* 오른쪽 하단 모서리 둥글게 하지 않음 */
+  border-radius: 15px 15px 0 15px; /* 사용자 메시지 스타일 */
+}
+
+.bot {
+  background-color: #fff3cd;
+  align-self: flex-start; /* 왼쪽 정렬 */
+  text-align: left;
+  margin-right: auto; /* 왼쪽에 고정 */
+  border-bottom-left-radius: 0; /* 왼쪽 하단 모서리 둥글게 하지 않음 */
+  border-radius: 15px 15px 15px 0; /* 챗봇 메시지 스타일 */
+}
+
+.chat-input-container {
+  display: flex;
+  padding: 10px;
+  background-color: #f3e1c6;
+  border-top: 1px solid #ddd;
+  position: fixed; /* 고정 위치로 설정 */
+  bottom: 70px; /* 하단 내비게이션 바로 위에 위치하도록 조정 */
+  width: calc(100% - 20px); /* 화면 너비에 맞게 크기 조절 */
+  box-sizing: border-box; /* 패딩이 포함된 전체 크기 계산 */
+}
+
+.chat-input-container input {
+  flex-grow: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px; /* 둥근 모서리 */
+  margin-right: 10px;
+  font-size: 13px; /* 폰트 크기 조정 */
+  background-color: #f9f3e6; /* 배경색 변경 */
+  outline: none; /* 포커스 시 아웃라인 제거 */
+}
+
+.send-icon {
+  width: 20px;  /* 아이콘 크기 조정 */
+  height: 20px;
+}
+
+.chat-input-container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #f9f3e6;
+  border: none;
+  border-radius: 50%; /* 원형 버튼으로 변경 */
+  cursor: pointer;
+}
+
+.chat-input-container button:hover {
+  background-color: #f9f3e6;
+}
+

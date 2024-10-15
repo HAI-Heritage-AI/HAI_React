@@ -1,0 +1,26 @@
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4e2c3;
+  }
+  
+  .loading-image {
+    width: 60%;
+    max-width: 400px;
+  }
+  
+  h1 {
+    font-family: 'Your Font';
+    font-size: 2rem;
+    margin-top: 20px;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #333;
+  }
+  
