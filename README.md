@@ -6,38 +6,71 @@
 ## 디렉토리 구조
 
 HAI_React/
+
 ├── public/
+
 │   ├── index.html                 # 앱의 진입점이 되는 HTML 파일
+
 │   ├── mainfest.json              # 웹앱 매니페스트 파일, PWA 설정에 사용
+
 │   └── images/
+
 │       └── logo.png               # 로딩 화면에서 사용되는 로고 이미지
+
 ├── src/
+
 │   ├── assets/                    # 각종 아이콘 및 이미지 파일 모음
+
 │   │   ├── book.svg               # 'Book' 메뉴 아이콘
+
 │   │   ├── chat.svg               # 'Chat' 메뉴 아이콘
+
 │   │   ├── chatbutton.png         # 채팅 전송 버튼 아이콘
+
 │   │   ├── profile.svg            # 'Profile' 메뉴 아이콘
+
 │   │   ├── trips.svg              # 'Trips' 메뉴 아이콘
+
 │   ├── components/                # 각 페이지와 컴포넌트 파일
+
 │   │   ├── Book.js                # 'Book' 페이지 컴포넌트
+
 │   │   ├── BottomNavigation.js    # 하단 네비게이션 바 컴포넌트
+
 │   │   ├── Chat.js                # 'Chat' 페이지 및 채팅 기능 컴포넌트
+
 │   │   ├── ChatMenu.js            # 햄버거 메뉴에 지난 채팅 기록을 표시하는 컴포넌트
+
 │   │   ├── Header.js              # 상단 햄버거 메뉴를 포함한 헤더 컴포넌트
+
 │   │   ├── LoadingScreen.js       # 앱 로딩 시 표시되는 화면 컴포넌트
+
 │   │   ├── Profile.js             # 'Profile' 페이지 컴포넌트
+
 │   │   ├── Trips.js               # 'Trips' 페이지 컴포넌트
+
 │   │   └── styles/                # 컴포넌트별 CSS 스타일 파일
+
 │   │       ├── BottomNavigation.css
+
 │   │       ├── Chat.css
+
 │   │       ├── ChatMenu.css
+
 │   │       ├── Header.css
+
 │   │       └── LoadingScreen.css
+
 │   ├── App.js                     # 전체 애플리케이션의 루트 컴포넌트
+
 │   ├── index.js                   # ReactDOM을 통해 애플리케이션을 렌더링하는 진입점
+
 │   ├── serviceWorkerRegistration.js # PWA 설정을 위한 서비스 워커 파일
+
 │   └── App.css                    # 전역 스타일을 정의하는 CSS 파일
+
 ├── package.json                   # 프로젝트 종속성과 스크립트 정의
+
 └── README.md                      # 프로젝트 설명과 실행 방법에 대한 문서
 
 
