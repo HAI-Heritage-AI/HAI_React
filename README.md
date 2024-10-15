@@ -10,7 +10,7 @@
     │   ├── 📄 index.html                           # 앱의 진입점이 되는 HTML 파일
     │   ├── 📄 mainfest.json                       # 웹앱 매니페스트 파일, PWA 설정에 사용
     │   └── 📂 images   
-    │   │   ├── 📄 logo.png                        # 로딩 화면에서 사용되는 로고 이미지
+    │   │   └── 📄 logo.png                        # 로딩 화면에서 사용되는 로고 이미지
     ├── 📂 src              
     │   ├── 📂 assets                                  # 각종 아이콘 및 이미지 파일 모음
     │   │   ├── 📄 book.svg                         # 'Book' 메뉴 아이콘     
