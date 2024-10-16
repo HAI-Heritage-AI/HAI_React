@@ -46,8 +46,10 @@
   background-color: #f3e1c6;
   border-top: 1px solid #ddd;
   position: fixed; /* 고정 위치로 설정 */
-  bottom: 70px; /* 하단 내비게이션 바로 위에 위치하도록 조정 */
-  width: calc(100% - 20px); /* 화면 너비에 맞게 크기 조절 */
+  bottom: 60px; /* 하단 내비게이션 바로 위에 위치하도록 조정 */
+  left: 0; /* 왼쪽 끝에 고정 */
+  right: 0; /* 오른쪽 끝에도 고정 */
+  width: 100%; /* 화면 너비에 맞게 크기 조절 */
   box-sizing: border-box; /* 패딩이 포함된 전체 크기 계산 */
 }
 
