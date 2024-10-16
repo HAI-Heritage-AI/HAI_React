@@ -46,7 +46,7 @@
 
 프로젝트 클론:
 ```bash
-git clone [저장소 URL]
+git clone https://github.com/HAI-Heritage-AI/HAI_React
 ```
 
 패키지 설치:
