@@ -2,14 +2,14 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: calc(100vh - 120px); /* 상단과 하단 메뉴바 공간 제외 */
+  height: calc(100vh - 200px); /* 상단과 하단 메뉴바 공간 제외 */
   padding: 10px;
 }
 
 .chat-messages {
   flex-grow: 1;
   overflow-y: auto; /* 스크롤 가능하게 설정 */
-  padding-bottom: 20px;
+  padding-bottom: 10px 10px 80px; /* 아래 입력창 공간을 위한 패딩 설정 */
 }
 
 .chat-bubble {
