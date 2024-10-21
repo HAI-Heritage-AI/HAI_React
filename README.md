@@ -7,7 +7,7 @@
 >
 ## 디렉토리 구조
 
-    .
+        .
     ├── 📂 public                   
     │   ├── 📄 index.html                           # 앱의 진입점이 되는 HTML 파일
     │   ├── 📄 mainfest.json                       # 웹앱 매니페스트 파일, PWA 설정에 사용
@@ -24,17 +24,20 @@
     │   │   ├── 📄 Book.js                           # 'Book' 페이지 컴포넌트   
     │   │   ├── 📄 BottomNavigation.js         # 하단 네비게이션 바 컴포넌트                  
     │   │   ├── 📄 chat.js                            # 'Chat' 페이지 및 채팅 기능 컴포넌트
-    │   │   ├── 📄 ChatMenu.js                   # 햄버거 메뉴에 지난 채팅 기록을 표시하는 컴포넌트          
+    │   │   ├── 📄 ChatMenu.js                   # 햄버거 메뉴에 지난 채팅 기록을 표시하는 컴포넌트      
+    │   │   ├── 📄 HeritageDetail.js              # 국가유산 상세 페이지
     │   │   ├── 📄 Header.js                        # 상단 햄버거 메뉴를 포함한 헤더 컴포넌트      
     │   │   ├── 📄 LoadingScreen.js              # 앱 로딩 시 표시되는 화면 컴포넌트               
     │   │   ├── 📄 Profile.js                         # 'Profile' 페이지 컴포넌트    
     │   │   ├── 📄 Trips.js                           # 'Trips' 페이지 컴포넌트 
     │   │   └── 📂 style                              # 컴포넌트별 CSS 스타일 파일
-    │   │   │   ├── 📄 BottomNavigation.css                             
-    │   │   │   ├── 📄 Chat.css                             
-    │   │   │   ├── 📄 ChatMenu.css                             
-    │   │   │   ├── 📄 Header.css                             
-    │   │   │   └── 📄 LoadingScreen.css                             
+    │   │   │   ├── 📄 Book.css                       # 도감 페이지 스타일                      
+    │   │   │   ├── 📄 BottomNavigation.css           # 하단 네비게이션 스타일                   
+    │   │   │   ├── 📄 Chat.css                       # 채팅 페이지 스타일      
+    │   │   │   ├── 📄 ChatMenu.css                   # 채팅 메뉴 스타일
+    │   │   │   ├── 📄 HeritageDetail.css             # 국가유산 상세 페이지 스타일            
+    │   │   │   ├── 📄 Header.css                     # 상단 헤더 스타일        
+    │   │   │   └── 📄 LoadingScreen.css              # 로딩 화면 스타일                 
     │   ├── 📄 App.js                                 # 전체 애플리케이션의 루트 컴포넌트
     │   ├── 📄 index.js                               # ReactDOM을 통해 애플리케이션을 렌더링하는 진입점
     │   ├── 📄 serviceWorkerRegistration.js   # PWA 설정을 위한 서비스 워커 파일                           

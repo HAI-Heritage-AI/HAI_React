@@ -21,6 +21,9 @@
 
 .nav-item img {
   opacity: 0.5;  /* 기본 상태: 아이콘 불투명도 */
+  width: 24px;
+  height: 24px;
+  margin-bottom: 5px;
 }
 
 .nav-item.active {
@@ -42,3 +45,8 @@ span {
   font-size: 12px;
 }
 
+/* 활성화된 메뉴 상태에 대한 추가 처리 */
+.nav-item.active span {
+  font-weight: bold;
+  color: black; /* 활성화된 텍스트 색상 */
+}

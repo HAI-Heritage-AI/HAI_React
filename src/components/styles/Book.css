@@ -1,0 +1,147 @@
+/* 전체 컨테이너 */
+.book-container {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 검색 및 필터 영역 */
+.search-filter-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.filter-group {
+  position: relative;
+}
+
+.filter-button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f3e1c6;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f3e1c6;
+}
+
+/* 문화재 카드 리스트 */
+.heritage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 그리드 설정 */
+  gap: 10px;
+}
+
+.heritage-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.heritage-card:hover {
+  transform: scale(1.05);  /* 카드 확대 애니메이션 */
+}
+
+/* 이미지 배치 및 스타일 */
+.image-placeholder {
+  width: 100%;
+  height: 120px; /* 이미지 높이 고정 */
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* 이미지를 카드 안에 잘리게 */
+  border-radius: 10px;
+  margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
+}
+
+.image-placeholder img {
+  width: 100%; /* 이미지의 너비에 맞춤 */
+  height: auto; /* 높이를 자동으로 */
+  object-fit: cover; /* 이미지 비율을 유지하며 카드 안에 맞춤 */
+}
+
+.heritage-name {
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.bookmark-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.bookmarked {
+  color: gold;
+}
+
+/* 반응형 디자인: 화면이 작을 때 레이아웃 변경 */
+@media (max-width: 768px) {
+  .heritage-grid {
+      grid-template-columns: repeat(2, 1fr); /* 작은 화면에서도 2열 그리드 */
+  }
+
+  .image-placeholder {
+      height: 120px; /* 화면이 작을 때 이미지 높이를 줄임 */
+  }
+}
+
+@media (max-width: 480px) {
+  .heritage-grid {
+      grid-template-columns: repeat(2, 1fr); /* 아주 작은 화면에서는 1열 그리드 */
+  }
+
+  .image-placeholder {
+      height: 100px; /* 작은 화면에서는 이미지 높이를 더 줄임 */
+  }
+}

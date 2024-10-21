@@ -15,7 +15,12 @@ function BottomNavigation() {
         <img src={chatIcon} className="icon" alt="Chat Icon" />
         <span>Chat</span>
       </Link>
-      <Link to="/book" className={`nav-item ${location.pathname === '/book' ? 'active' : ''}`}>
+      <Link
+        to="/book"
+        className={`nav-item ${
+          location.pathname === '/book' || location.pathname.includes('/heritage') ? 'active' : ''
+        }`}
+      >
         <img src={bookIcon} className="icon" alt="Book Icon" />
         <span>Book</span>
       </Link>

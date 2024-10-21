@@ -1,0 +1,29 @@
+.heritage-detail-container {
+    padding: 20px;
+  }
+  
+  .image-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .image-section img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+  
+  .heritage-info {
+    text-align: left;
+  }
+  
+  .heritage-info h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .heritage-info p {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
