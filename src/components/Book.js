@@ -1,73 +1,76 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import BookFilterGroup from './BookFilterGroup';
+import BookHeritageCard from './BookHeritageCard';
+import { fetchHeritageData, fetchFilteredHeritageData } from './bookApi';
 import './styles/Book.css';
 
 function Book() {
   const [data, setData] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [regions, setRegions] = useState([]);
+  const [periods, setPeriods] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState(null);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [isRegionOpen, setIsRegionOpen] = useState(false);
-  const [isPeriodOpen, setIsPeriodOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const observer = useRef();
 
   const navigate = useNavigate();
-  const limit = 10;
 
-  // FastAPI에서 데이터를 페이징 방식으로 로드
-  const fetchData = useCallback(async () => {
+  // 전체 데이터 및 필터 목록 로드
+  const fetchInitialData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/heritage', {
-        params: { limit, offset }
-      });
-      setData(prevData => [...prevData, ...response.data]);
-      setFilteredData(prevData => [...prevData, ...response.data]);
-      if (response.data.length < limit) {
-        setHasMore(false);
-      }
+      const allData = await fetchHeritageData();
+      setData(allData);
+      setFilteredData(allData); // 전체 데이터를 필터링된 데이터로 설정
+
+      // 필터 목록 추출 (중복 제거)
+      setCategories(['전체', ...new Set(allData.map((item) => item.ccmaName))]);
+      setRegions(['전체', ...new Set(allData.map((item) => item.ccbaCtcdNm))]);
+      setPeriods(['전체', ...new Set(allData.map((item) => item.ccceName))]);
     } catch (error) {
       console.error('데이터 가져오기 실패', error);
     } finally {
       setLoading(false);
     }
-  }, [offset, limit]);
+  }, []);
+
+  const applyFilter = useCallback(async () => {
+    setLoading(true);
+    try {
+      const filteredData = await fetchFilteredHeritageData(selectedCategory, selectedRegion, selectedPeriod);
+      setFilteredData(filteredData); // 필터가 적용된 데이터를 저장
+    } catch (error) {
+      console.error('필터 적용 중 오류 발생', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedCategory, selectedRegion, selectedPeriod]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (selectedCategory || selectedRegion || selectedPeriod) {
+      applyFilter();
+    } else {
+      fetchInitialData();
+    }
+  }, [selectedCategory, selectedRegion, selectedPeriod, applyFilter, fetchInitialData]);
 
-  // 무한 스크롤을 위한 IntersectionObserver 설정
-  const lastElementRef = useCallback(node => {
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setOffset(prevOffset => prevOffset + limit);
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, [loading, hasMore]);
-
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setIsCategoryOpen(false);
-  };
-
-  const handleRegionSelect = (region) => {
-    setSelectedRegion(region);
-    setIsRegionOpen(false);
-  };
-
-  const handlePeriodSelect = (period) => {
-    setSelectedPeriod(period);
-    setIsPeriodOpen(false);
+  // 검색 필터링 함수 (띄어쓰기 무시, 부분 일치)
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    
+    if (searchTerm === '') {
+      setFilteredData(data); // 검색어가 없을 경우 전체 데이터를 복구
+    } else {
+      const searchTerms = searchTerm.split(/\s+/); // 띄어쓰기로 분리된 단어 배열
+      setFilteredData(
+        data.filter((item) =>
+          searchTerms.every((term) => item.ccbaMnm1.toLowerCase().includes(term)) // 모든 단어가 부분적으로 포함되는지 확인
+        )
+      );
+    }
   };
 
   const handleCardClick = (id) => {
@@ -82,107 +85,34 @@ function Book() {
           type="text"
           placeholder="찾으시는 국가유산 이름을 검색해 보세요"
           className="search-input"
-          onChange={(e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            setFilteredData(
-              data.filter((item) =>
-                item.ccbaMnm1.toLowerCase().includes(searchTerm)
-              )
-            );
-          }}
+          onChange={handleSearch} // 검색 입력값 변경 시 호출
         />
         <div className="filter-buttons">
-          {/* 종목별 필터 */}
-          <div className="filter-group">
-            <button
-              className="filter-button"
-              onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-            >
-              {selectedCategory ? selectedCategory : '종목별'}
-            </button>
-            {isCategoryOpen && (
-              <ul className="dropdown-menu">
-                {Array.from(new Set(data.map((item) => item.ccmaName))).map((option, index) => (
-                  <li key={index} onClick={() => handleCategorySelect(option)}>
-                    {option}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* 지역별 필터 */}
-          <div className="filter-group">
-            <button
-              className="filter-button"
-              onClick={() => setIsRegionOpen(!isRegionOpen)}
-            >
-              {selectedRegion ? selectedRegion : '지역별'}
-            </button>
-            {isRegionOpen && (
-              <ul className="dropdown-menu">
-                {Array.from(new Set(data.map((item) => item.ccbaCtcdNm))).map((option, index) => (
-                  <li key={index} onClick={() => handleRegionSelect(option)}>
-                    {option}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* 시대별 필터 */}
-          <div className="filter-group">
-            <button
-              className="filter-button"
-              onClick={() => setIsPeriodOpen(!isPeriodOpen)}
-            >
-              {selectedPeriod ? selectedPeriod : '시대별'}
-            </button>
-            {isPeriodOpen && (
-              <ul className="dropdown-menu">
-                {Array.from(new Set(data.map((item) => item.ccceName))).map((option, index) => (
-                  <li key={index} onClick={() => handlePeriodSelect(option)}>
-                    {option}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <BookFilterGroup
+            title="종목별"
+            options={categories}
+            selectedOption={selectedCategory}
+            onSelectOption={setSelectedCategory}
+          />
+          <BookFilterGroup
+            title="지역별"
+            options={regions}
+            selectedOption={selectedRegion}
+            onSelectOption={setSelectedRegion}
+          />
+          <BookFilterGroup
+            title="시대별"
+            options={periods}
+            selectedOption={selectedPeriod}
+            onSelectOption={setSelectedPeriod}
+          />
         </div>
       </div>
 
-      {/* 문화재 카드 리스트 */}
       <div className="heritage-grid">
-        {filteredData.map((item, index) => {
-          if (index === filteredData.length - 1) {
-            return (
-              <div
-                ref={lastElementRef}
-                key={item.ccbaAsno}
-                className="heritage-card"
-                onClick={() => handleCardClick(item.ccbaAsno)}
-              >
-                <div className="image-placeholder">
-                  {item.imageUrl ? <img src={item.imageUrl} alt={item.ccbaMnm1} /> : <span>이미지 없음</span>}
-                </div>
-                <div className="heritage-name">{item.ccbaMnm1}</div>
-              </div>
-            );
-          } else {
-            return (
-              <div
-                key={item.ccbaAsno}
-                className="heritage-card"
-                onClick={() => handleCardClick(item.ccbaAsno)}
-              >
-                <div className="image-placeholder">
-                  {item.imageUrl ? <img src={item.imageUrl} alt={item.ccbaMnm1} /> : <span>이미지 없음</span>}
-                </div>
-                <div className="heritage-name">{item.ccbaMnm1}</div>
-              </div>
-            );
-          }
-        })}
+        {filteredData.map((item) => (
+          <BookHeritageCard key={item.ccbaAsno} item={item} onClick={handleCardClick} />
+        ))}
       </div>
       {loading && <div>Loading...</div>}
     </div>
