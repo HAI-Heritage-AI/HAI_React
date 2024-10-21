@@ -28,15 +28,20 @@ function HeritageDetail() {
       </div>
       <div className="heritage-info">
         <h1>
-          {heritage.ccbaMnm1} ({heritage.ccbaMnm2})
+          {heritage.ccbaMnm1}
+          <span className="sub-text">({heritage.ccbaMnm2})</span> {/* 한자 이름을 한글 이름 아래에 표시 */}
         </h1>
         <p>
           <strong>소재지:</strong> {heritage.ccbaLcad}
         </p>
-        <p>{heritage.content}</p>
+        <div className="heritage-content-box">
+          <p>{heritage.content}</p> {/* content를 박스에 넣어 스크롤 가능하게 함 */}
+        </div>
       </div>
     </div>
   );
+  
+  
 }
 
 export default HeritageDetail;
