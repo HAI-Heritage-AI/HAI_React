@@ -13,54 +13,76 @@
 }
 
 .search-input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  margin-bottom: 10px;
+  padding: 12px 20px;
+  border: 1px solid #cccccc;
+  border-radius: 30px;
+  margin-bottom: 15px;
   font-size: 14px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 테두리 색상 및 그림자 애니메이션 */
+}
+
+.search-input:focus {
+  border-color: #98a8af; /* 부드러운 하늘색 테두리 */
+  box-shadow: 0 0 3px rgba(142, 202, 230, 0.5); /* 하늘색 그림자 */
+  outline: none; /* 기본 파란색 아웃라인 제거 */
 }
 
 .filter-buttons {
   display: flex;
-  justify-content: space-around;
-}
-
-.filter-group {
-  position: relative;
+  justify-content: space-evenly; /* 버튼 간격 균등 배분 */
+  gap: 10px; /* 버튼 사이의 간격을 줌 */
 }
 
 .filter-button {
-  padding: 10px 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background-color: #f3e1c6;
+  padding: 12px 24px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: #e7f4ff;
   cursor: pointer;
   font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.filter-button:hover {
+  background-color: #e0d4bb; /* 호버 시 살짝 더 어두운 색상 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 추가 */
+}
 /* 드롭다운 메뉴 스타일 */
 .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  background-color: #f3e1c6;
+  border: 1px solid white;
+  border-radius: 5px;
   list-style: none;
   margin: 0;
   padding: 10px 0;
   z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 드롭다운에 그림자 추가 */
+  max-height: 200px; /* 드롭다운의 최대 높이 설정 */
+  overflow-y: auto; /* 스크롤 가능하도록 설정 */
 }
 
 .dropdown-menu li {
   padding: 10px;
   cursor: pointer;
+  text-align: center;
+  font-size: 14px;
 }
 
 .dropdown-menu li:hover {
   background-color: #f3e1c6;
 }
+
+
+.filter-group {
+  position: relative;
+}
+
 
 /* 문화재 카드 리스트 */
 .heritage-grid {
@@ -76,7 +98,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fff;
+  background-color: #f9f3e6;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;

@@ -114,7 +114,7 @@ function Book() {
           <BookHeritageCard key={item.ccbaAsno} item={item} onClick={handleCardClick} />
         ))}
       </div>
-      {loading && <div>Loading...</div>}
+      {loading && <div></div>}
     </div>
   );
 }

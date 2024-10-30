@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   padding-left: 10px;  /* 왼쪽 패딩을 조정하여 햄버거 메뉴를 오른쪽으로 이동 */
-  background-color: #f3e1c6;
+  background-color: #f4faff;
   border-bottom: 1px solid #ddd;
 }
 
