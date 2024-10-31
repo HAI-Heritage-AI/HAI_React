@@ -2,10 +2,6 @@
 .heritage-detail-container {
   max-width: 600px; /* 좌우 여백을 줄이기 위해 최대 너비 조정 */
   margin: 0 auto;
-  /* padding: 20px;
-  background-color: #f4f4f4;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
   max-height: calc(100vh - 100px); /* 전체 페이지 높이를 화면에서 네비게이션 바까지로 제한 */
   overflow-y: auto; /* 전체 컨테이너에서 스크롤이 발생하도록 설정 */
 }
@@ -55,7 +51,7 @@
   max-height: 300px;
   overflow-y: auto;
   padding: 15px;
-  background-color: #f4faff;
+  background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

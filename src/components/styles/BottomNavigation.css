@@ -9,7 +9,7 @@
   left: 0; /* 왼쪽 끝에 고정 */
   right: 0; /* 오른쪽 끝에도 고정 */
   width: 100%;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #f4faff;
   box-sizing: border-box; /* 패딩과 경계를 전체 크기에 포함 */
 }
 

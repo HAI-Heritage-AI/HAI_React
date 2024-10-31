@@ -40,14 +40,19 @@ function Book() {
   const applyFilter = useCallback(async () => {
     setLoading(true);
     try {
-      const filteredData = await fetchFilteredHeritageData(selectedCategory, selectedRegion, selectedPeriod);
+      const category = selectedCategory === "전체" ? null : selectedCategory;
+      const region = selectedRegion === "전체" ? null : selectedRegion;
+      const period = selectedPeriod === "전체" ? null : selectedPeriod;
+  
+      const filteredData = await fetchFilteredHeritageData(category, region, period);
       setFilteredData(filteredData); // 필터가 적용된 데이터를 저장
     } catch (error) {
-      console.error('필터 적용 중 오류 발생', error);
+      console.error("필터 적용 중 오류 발생", error);
     } finally {
       setLoading(false);
     }
   }, [selectedCategory, selectedRegion, selectedPeriod]);
+  
 
   useEffect(() => {
     if (selectedCategory || selectedRegion || selectedPeriod) {
@@ -60,18 +65,24 @@ function Book() {
   // 검색 필터링 함수 (띄어쓰기 무시, 부분 일치)
   const handleSearch = (e) => {
     const searchTerm = e.target.value.toLowerCase().trim();
-    
+  
     if (searchTerm === '') {
       setFilteredData(data); // 검색어가 없을 경우 전체 데이터를 복구
     } else {
       const searchTerms = searchTerm.split(/\s+/); // 띄어쓰기로 분리된 단어 배열
       setFilteredData(
         data.filter((item) =>
-          searchTerms.every((term) => item.ccbaMnm1.toLowerCase().includes(term)) // 모든 단어가 부분적으로 포함되는지 확인
+          searchTerms.every(
+            (term) =>
+              item.ccbaMnm1 && // item.ccbaMnm1이 존재하는지 확인
+              item.ccbaMnm1.toLowerCase().includes(term)
+          )
         )
       );
     }
   };
+  
+  
 
   const handleCardClick = (id) => {
     navigate(`/heritage/${id}`);
@@ -114,6 +125,7 @@ function Book() {
           <BookHeritageCard key={item.ccbaAsno} item={item} onClick={handleCardClick} />
         ))}
       </div>
+
       {loading && <div></div>}
     </div>
   );
