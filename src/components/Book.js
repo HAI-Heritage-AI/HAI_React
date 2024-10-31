@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookFilterGroup from './BookFilterGroup';
 import BookHeritageCard from './BookHeritageCard';
-import { fetchHeritageData, fetchFilteredHeritageData } from './bookApi';
+import { fetchHeritageData, fetchFilteredHeritageData } from './BookApi';
 import './styles/Book.css';
 
 function Book() {
@@ -22,20 +22,20 @@ function Book() {
   const fetchInitialData = useCallback(async () => {
     setLoading(true);
     try {
-      const allData = await fetchHeritageData();
-      setData(allData);
-      setFilteredData(allData); // 전체 데이터를 필터링된 데이터로 설정
-
-      // 필터 목록 추출 (중복 제거)
-      setCategories(['전체', ...new Set(allData.map((item) => item.ccmaName))]);
-      setRegions(['전체', ...new Set(allData.map((item) => item.ccbaCtcdNm))]);
-      setPeriods(['전체', ...new Set(allData.map((item) => item.ccceName))]);
+        const allData = await fetchHeritageData();
+        console.log(allData); // 데이터가 잘 들어오는지 확인
+        setData(allData);
+        setFilteredData(allData);
+        setCategories(['전체', ...new Set(allData.map((item) => item.ccmaname))]);
+        setRegions(['전체', ...new Set(allData.map((item) => item.ccbactcdnm))]);
+        setPeriods(['전체', ...new Set(allData.map((item) => item.cccename))]);
     } catch (error) {
-      console.error('데이터 가져오기 실패', error);
+        console.error('데이터 가져오기 실패', error);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  }, []);
+    }, []);
+
 
   const applyFilter = useCallback(async () => {
     setLoading(true);
@@ -56,10 +56,11 @@ function Book() {
 
   useEffect(() => {
     if (selectedCategory || selectedRegion || selectedPeriod) {
-      applyFilter();
+        applyFilter();
     } else {
-      fetchInitialData();
+        fetchInitialData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory, selectedRegion, selectedPeriod, applyFilter, fetchInitialData]);
 
   // 검색 필터링 함수 (띄어쓰기 무시, 부분 일치)
@@ -74,8 +75,8 @@ function Book() {
         data.filter((item) =>
           searchTerms.every(
             (term) =>
-              item.ccbaMnm1 && // item.ccbaMnm1이 존재하는지 확인
-              item.ccbaMnm1.toLowerCase().includes(term)
+              item.ccbamnm1 && // item.ccbaMnm1이 존재하는지 확인
+              item.ccbamnm1.toLowerCase().includes(term)
           )
         )
       );
@@ -121,10 +122,12 @@ function Book() {
       </div>
 
       <div className="heritage-grid">
-        {filteredData.map((item) => (
-          <BookHeritageCard key={item.ccbaAsno} item={item} onClick={handleCardClick} />
-        ))}
+          {filteredData.map((item, index) => (
+              <BookHeritageCard key={item.ccbaAsno || index} item={item} onClick={handleCardClick} />
+          ))}
       </div>
+
+
 
       {loading && <div></div>}
     </div>
