@@ -1,0 +1,255 @@
+/* trip.css */
+.trip-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 60px; /* 상단 컨테이너 여백 */
+    padding-bottom: 80px; /* 하단 내비게이션 바 여백 */
+    background-color: #f4faff;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+}
+
+.header {
+    height: 60px; /* 헤더 높이 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+    background-color: #f4faff;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+.back-button {
+    font-size: 25px;
+    padding-left: 15px;
+    cursor: pointer;
+    color: #141C74;
+}
+
+.progress-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.step-indicator {
+    width: 90%;
+    height: 6px;
+    background-color: #e0e0e0;
+}
+
+.step-progress {
+    height: 100%;
+    background-color: #141C74;
+    transition: width 0.4s ease;
+}
+
+.step-text {
+    font-size: 25px;
+    color: #141C74;
+    font-weight: bold;
+    margin-top: 60px; /* 질문 위에 배치될 위치 */
+}
+
+.trip-subheader {
+    font-size: 22px;
+    font-weight: bold;
+    color: #141C74;
+    margin-top: 0px;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+/* 직접 입력 필드 스타일 */
+.custom-input {
+    width: 100%;
+    max-width: 120px;
+    padding: 12px 0;
+    margin-top: 10px;
+    border: 2px solid #141C74;
+    border-radius: 25px;
+    font-size: 16px;
+    color: #141C74;
+    text-align: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #5f76f3;
+}
+
+.custom-input:hover{
+    background-color: #5f76f3;
+    color: #fff;
+}
+
+.custom-input:active {
+    background-color: #3d53b1;
+    color: #fff;
+    transform: scale(0.98);
+}
+
+/* 다른 버튼들과 통일감 유지 */
+.trip-radio-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%; 
+    max-width: 300px;
+    margin-top: 0px;
+}
+
+.trip-radio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+    justify-items: center;
+}
+
+.trip-radio-button {
+    background-color: #f4faff;
+    border: 2px solid #141C74;
+    color: #141C74;
+    border-radius: 25px;
+    padding: 12px 0;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    max-width: 120px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.trip-radio-button:hover {
+    background-color: #5f76f3;
+    color: #fff;
+}
+
+.trip-radio-button:active {
+    background-color: #3d53b1;
+    color: #fff;
+    transform: scale(0.98);
+}
+
+/* 달력 스타일 */
+.trip-calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+}
+
+.calendar-inputs {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #141C74;
+}
+
+.react-calendar {
+    border: none;
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    font-family: 'Arial', sans-serif;
+    color: #141C74;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #141C74;
+}
+
+.react-calendar__navigation button {
+    background: none;
+    color: #141C74;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.react-calendar__navigation button:disabled {
+    color: #ddd;
+}
+
+.react-calendar__month-view__weekdays {
+    text-align: center;
+    font-size: 16px;
+    color: #141C74;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.react-calendar__month-view__days__day,
+.react-calendar__year-view__tile,
+.react-calendar__decade-view__tile,
+.react-calendar__century-view__tile {
+    font-size: 16px;
+    color: #141C74;
+    padding: 10px;
+    border-radius: 8px; /* 라운드된 사각형 스타일 */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+    color: #ddd;
+}
+
+.react-calendar__tile--now {
+    background-color: #e0e7ff;
+    color: #141C74;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.react-calendar__tile--range {
+    background-color: #5f76f3;
+    color: white;
+    border-radius: 8px;
+}
+
+.react-calendar__tile--rangeStart,
+.react-calendar__tile--rangeEnd {
+    background-color: #3d53b1;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.react-calendar__tile--active {
+    background-color: #141C74;
+    color: white;
+    border-radius: 8px;
+}
+
+.react-calendar__tile:enabled:hover {
+    background-color: #5f76f3;
+    color: white;
+    border-radius: 8px;
+}
