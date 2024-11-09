@@ -148,7 +148,7 @@ const TripResult = () => {
     <div className="trip-result-container">
       <input
         type="text"
-        placeholder="여행 플래너 Agent에게 무엇이든 질문해보세요"
+        placeholder="여행 플래너 챗봇에게 무엇이든 질문해보세요"
         className="search-input"
       />
 
