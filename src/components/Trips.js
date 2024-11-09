@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './styles/Trip.css';
 
 function Trips() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     gender: '',
@@ -15,14 +17,12 @@ function Trips() {
     endDate: '',
   });
   const [selectedDates, setSelectedDates] = useState([new Date(), new Date()]);
-  
-  // 직접 입력 텍스트 관리 상태 추가
   const [customDestination, setCustomDestination] = useState('');
   const [customStyle, setCustomStyle] = useState('');
 
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
-    setStep(step + 1); // 선택 시 다음 단계로 자동 진행
+    setStep(step + 1);
   };
 
   const handleDateChange = (date) => {
@@ -34,11 +34,45 @@ function Trips() {
     });
   };
 
+  // 여행 계획 생성 함수 - POST 요청 대신 바로 이동
+  const handleCreateTrip = useCallback(async () => {
+    try {
+      // 서버가 없는 상황에서 바로 결과 페이지로 이동합니다.
+      navigate('/trip-result');
+      
+      // 실제 API 요청이 필요할 때 사용합니다.
+      /*
+      const response = await fetch('/api/create-travel-plan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        navigate('/trip-result');
+      } else {
+        console.error('여행 계획 생성 실패');
+      }
+      */
+    } catch (error) {
+      console.error('API 호출 에러:', error);
+    }
+  }, [navigate]);
+  // [formData, navigate]);
+
+  // 여행 일정 선택 후 자동으로 계획 생성
+  useEffect(() => {
+    if (step === 6 && formData.startDate && formData.endDate) {
+      handleCreateTrip();
+    }
+  }, [step, formData.startDate, formData.endDate, handleCreateTrip]);
+
   const progressWidth = `${(step / 6) * 100}%`;
 
   return (
     <div className="trip-container">
-      {/* 상단 고정 헤더 */}
       <div className="header">
         <span className="back-button" onClick={() => step > 1 && setStep(step - 1)}>&larr;</span>
         <div className="progress-container">
@@ -48,10 +82,8 @@ function Trips() {
         </div>
       </div>
 
-      {/* 단계 표시 (질문 위) */}
       <div className="step-text">{step}/6</div>
 
-      {/* 단계별 입력 화면 */}
       {step === 1 && (
         <div className="trip-radio-group">
           <h2 className="trip-subheader">성별이 어떻게 되세요?</h2>
@@ -88,7 +120,7 @@ function Trips() {
             ))}
             <input
               type="text"
-              className="custom-input" 
+              className="custom-input"
               placeholder="직접 입력"
               value={customDestination}
               onChange={(e) => setCustomDestination(e.target.value)}
@@ -104,17 +136,16 @@ function Trips() {
           {['휴양', '액티비티', '식도락', '쇼핑', 'SNS 감성'].map(style => (
             <button key={style} className="trip-radio-button" onClick={() => handleInputChange('style', style)}>{style}</button>
           ))}
-          {/* 입력 필드만 남김 */}
           <input
             type="text"
             className="custom-input"
             placeholder="직접 입력"
             value={customStyle}
             onChange={(e) => setCustomStyle(e.target.value)}
+            onBlur={() => handleInputChange('style', customStyle)}
           />
         </div>
       )}
-
 
       {step === 6 && (
         <div className="trip-calendar-container">
@@ -128,7 +159,7 @@ function Trips() {
             onChange={handleDateChange}
             value={selectedDates}
             minDate={new Date()}
-            formatDay={(locale, date) => date.getDate()} // 날짜에 "일" 제거
+            formatDay={(locale, date) => date.getDate()}
           />
         </div>
       )}

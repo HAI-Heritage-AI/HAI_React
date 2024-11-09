@@ -6,27 +6,27 @@ import Chat from './components/Chat';
 import Book from './components/Book';
 import Trips from './components/Trips';
 import Profile from './components/Profile';
-import HeritageDetail from './components/HeritageDetail'; 
+import HeritageDetail from './components/HeritageDetail';
 import BottomNavigation from './components/BottomNavigation';
 import LoadingScreen from './components/LoadingScreen';
+import TripResult from './components/TripResult';
 import './App.css';
 
 function AppContent() {
-  const location = useLocation(); // 현재 경로 가져옴
+  const location = useLocation();
   const [activeMenu, setActiveMenu] = useState('');
 
   useEffect(() => {
-    // 현재 경로에 따라 활성화된 메뉴 상태 설정
     if (location.pathname === '/') {
       setActiveMenu('chat');
     } else if (location.pathname.includes('/book')) {
       setActiveMenu('book');
-    } else if (location.pathname.includes('/trips')) {
+    } else if (location.pathname.includes('/trips') || location.pathname.includes('/trip-result')) {
       setActiveMenu('trips');
     } else if (location.pathname.includes('/profile')) {
       setActiveMenu('profile');
     } else if (location.pathname.includes('/heritage')) {
-      setActiveMenu('book'); // HeritageDetail에서도 book 활성화
+      setActiveMenu('book');
     }
   }, [location.pathname]);
 
@@ -39,13 +39,14 @@ function AppContent() {
         </>
       )}
       <Routes>
-        <Route path="/" element={<Chat />} />  
-        <Route path="/book" element={<Book />} />  
-        <Route path="/trips" element={<Trips />} /> 
+        <Route path="/" element={<Chat />} />
+        <Route path="/book" element={<Book />} />
+        <Route path="/trips" element={<Trips />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/heritage/:id" element={<HeritageDetail />} /> {/* 상세 페이지 경로 추가 */}
+        <Route path="/heritage/:id" element={<HeritageDetail />} />
+        <Route path="/trip-result" element={<TripResult />} />
       </Routes>
-      <BottomNavigation activeMenu={activeMenu} /> {/* 활성화된 메뉴 상태 전달 */}
+      <BottomNavigation activeMenu={activeMenu} />
     </>
   );
 }

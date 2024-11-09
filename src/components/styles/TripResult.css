@@ -1,0 +1,162 @@
+.trip-result-container {
+  padding: 20px;
+  font-family: 'Pretendard', sans-serif;
+  color: #333;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border-radius: 24px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+.map-container {
+  height: 250px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.day-selector {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+  background-color: #f5f5f7;
+  padding: 10px 0;
+  border-radius: 24px;
+}
+
+.day-button {
+  flex: 1;
+  padding: 10px 0;
+  background-color: transparent;
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+.day-button.active {
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 15px;
+}
+
+.trip-details {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.event-item:last-child {
+  border-bottom: none;
+}
+
+.event-time {
+  font-size: 14px;
+  color: #666;
+  margin-right: 12px;
+}
+
+.event-icon {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  border: 2px solid white;
+  font-weight: bold;
+  font-size: 12px;
+  z-index: 1000;
+}
+
+/* 상단 날짜 선택 버튼 디자인 */
+.date-range-selector {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 12px;
+}
+
+.date-button {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.date-button.active {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.day-selector-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+  gap: 10px;
+}
+
+.day-button {
+  background-color: #f5f5f7;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.day-button.active {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.trip-details h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.trip-details .event-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+.trip-details .event-icon {
+  margin-right: 8px;
+}
