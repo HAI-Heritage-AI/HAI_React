@@ -69,17 +69,36 @@
   border-bottom: none;
 }
 
-.event-time {
+/* 일반 텍스트처럼 보이게 설정 */
+.editable-text {
+  cursor: pointer;
+  padding: 4px 8px;
   font-size: 14px;
-  color: #666;
-  margin-right: 12px;
+  color: #333;
 }
 
-.event-icon {
-  font-size: 20px;
-  margin-right: 10px;
+.inline-edit-input {
+  font-size: 14px;
+  padding: 4px;
+  margin-right: 5px;
+  border: none;
+  background: none;
+  outline: none;
+  color: inherit;
 }
 
+/* 시간 입력창을 좁게 설정 */
+.time-input {
+  width: 50px;
+  text-align: center;
+}
+
+/* 장소 입력창을 더 넓게 설정 */
+.place-input {
+  width: 100%;
+}
+
+/* 마커 스타일 */
 .marker {
   display: flex;
   align-items: center;
@@ -127,34 +146,10 @@
   gap: 10px;
 }
 
-.day-button {
-  background-color: #f5f5f7;
-  color: #333;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-weight: bold;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.day-button.active {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-}
-
 .trip-details h2 {
   font-size: 16px;
   margin-bottom: 10px;
   font-weight: bold;
-}
-
-.trip-details .event-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 0;
-  font-size: 14px;
 }
 
 .trip-details .event-icon {

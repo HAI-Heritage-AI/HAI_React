@@ -3,12 +3,13 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import './styles/TripResult.css';
 
 const TripResult = () => {
-  console.log("TripResult component loaded");
-
   const [tripData, setTripData] = useState(null);
   const [currentDay, setCurrentDay] = useState(1);
   const [mapCenter, setMapCenter] = useState({ lat: 35.1796, lng: 129.0756 });
   const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+  const [editField, setEditField] = useState(null);
+  const [editedEvent, setEditedEvent] = useState({ time: '', place: '' });
   const markersRef = useRef([]);
   const mapRef = useRef(null);
 
@@ -48,7 +49,6 @@ const TripResult = () => {
         setTripData(Object.assign({}, ...updatedData));
         console.log("Updated trip data with coordinates:", updatedData);
 
-        // 모든 마커가 보이도록 지도 범위 설정
         const bounds = new window.kakao.maps.LatLngBounds();
         updatedData.forEach(dayEvents => {
           dayEvents[`Day ${currentDay}`].forEach(event => {
@@ -137,7 +137,25 @@ const TripResult = () => {
     }
   };
 
-  if (!tripData) return <div>Loading...</div>;
+  const handleEditClick = (index, field) => {
+    setEditIndex(index);
+    setEditField(field);
+    setEditedEvent({ ...tripData[`Day ${currentDay}`][index] });
+  };
+
+  const handleInputChange = (field, value) => {
+    setEditedEvent((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleBlur = (index) => {
+    const updatedTripData = { ...tripData };
+    updatedTripData[`Day ${currentDay}`][index] = editedEvent;
+    setTripData(updatedTripData);
+    setEditIndex(null);
+    setEditField(null);
+  };
+
+  if (!tripData) return <div></div>;
 
   return (
     <div className="trip-result-container">
@@ -161,15 +179,46 @@ const TripResult = () => {
             </button>
           ))}
         </div>
-        {/* <h2>Day {currentDay} 일정</h2> */}
+
         {(tripData[`Day ${currentDay}`] || []).map((event, index) => (
           <div key={index} className="event-item">
-            <span className="event-time">{event.time}</span>
-            <span>{event.place}</span>
+            {editIndex === index && editField === 'time' ? (
+              <input
+                type="text"
+                value={editedEvent.time}
+                onChange={(e) => handleInputChange('time', e.target.value)}
+                onBlur={() => handleBlur(index)}
+                className="inline-edit-input time-input"
+                autoFocus
+              />
+            ) : (
+              <span
+                onClick={() => handleEditClick(index, 'time')}
+                className="editable-text"
+              >
+                {event.time}
+              </span>
+            )}
+            {editIndex === index && editField === 'place' ? (
+              <input
+                type="text"
+                value={editedEvent.place}
+                onChange={(e) => handleInputChange('place', e.target.value)}
+                onBlur={() => handleBlur(index)}
+                className="inline-edit-input place-input"
+                autoFocus
+              />
+            ) : (
+              <span
+                onClick={() => handleEditClick(index, 'place')}
+                className="editable-text"
+              >
+                {event.place}
+              </span>
+            )}
           </div>
         ))}
       </div>
-
     </div>
   );
 };
