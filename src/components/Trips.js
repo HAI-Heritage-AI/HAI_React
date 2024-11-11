@@ -35,32 +35,27 @@ function Trips() {
   };
 
   // 여행 계획 생성 함수 - POST 요청 대신 바로 이동
-  const handleCreateTrip = useCallback(async () => {
-    try {
-      // 서버가 없는 상황에서 바로 결과 페이지로 이동합니다.
-      navigate('/trip-result');
-      
-      // 실제 API 요청이 필요할 때 사용합니다.
-      /*
-      const response = await fetch('/api/create-travel-plan', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+// handleCreateTrip 함수
+const handleCreateTrip = useCallback(async () => {
+  try {
+    const response = await fetch('http://localhost:8000/travel-plan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
 
-      if (response.ok) {
-        navigate('/trip-result');
-      } else {
-        console.error('여행 계획 생성 실패');
-      }
-      */
-    } catch (error) {
-      console.error('API 호출 에러:', error);
+    if (response.ok) {
+      navigate('/trip-result');
+    } else {
+      console.error('여행 계획 생성 실패');
     }
-  }, [navigate]);
-  // [formData, navigate]);
+  } catch (error) {
+    console.error('API 호출 에러:', error);
+  }
+}, [navigate, formData]);
+
 
   // 여행 일정 선택 후 자동으로 계획 생성
   useEffect(() => {
