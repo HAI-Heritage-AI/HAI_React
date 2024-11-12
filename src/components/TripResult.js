@@ -1,15 +1,14 @@
-// TripResult.js
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import './styles/TripResult.css';
 
 const TripResult = () => {
   const [tripData, setTripData] = useState(null);
   const [currentDay, setCurrentDay] = useState(1);
-  const [mapCenter, setMapCenter] = useState({ lat: 35.1796, lng: 129.0756 });
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [editField, setEditField] = useState(null);
   const [editedEvent, setEditedEvent] = useState({ time: '', place: '' });
+  const [searchResults, setSearchResults] = useState([]);
   const markersRef = useRef([]);
   const mapRef = useRef(null);
 
@@ -17,7 +16,6 @@ const TripResult = () => {
     const checkKakaoMapLoad = () => {
       if (window.kakao && window.kakao.maps) {
         setIsMapLoaded(true);
-        console.log("Kakao Maps API initialized successfully");
       } else {
         setTimeout(checkKakaoMapLoad, 500);
       }
@@ -47,34 +45,16 @@ const TripResult = () => {
         );
 
         setTripData(Object.assign({}, ...updatedData));
-        console.log("Updated trip data with coordinates:", updatedData);
-
-        const bounds = new window.kakao.maps.LatLngBounds();
-        updatedData.forEach(dayEvents => {
-          dayEvents[`Day ${currentDay}`].forEach(event => {
-            if (event.lat && event.lng) {
-              bounds.extend(new window.kakao.maps.LatLng(event.lat, event.lng));
-            }
-          });
-        });
-        mapRef.current.setBounds(bounds);
-
       } catch (error) {
         console.error("Error loading trip data:", error);
       }
     };
 
     fetchTripData();
-  }, [isMapLoaded, currentDay]);
+  }, [isMapLoaded]);
 
   const getCoordinatesFromAddress = async (address) => {
     return new Promise((resolve) => {
-      if (!window.kakao || !window.kakao.maps || !window.kakao.maps.services) {
-        console.error("Kakao maps API or services library is not loaded.");
-        resolve(null);
-        return;
-      }
-
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(address, function(result, status) {
         if (status === window.kakao.maps.services.Status.OK) {
@@ -85,6 +65,16 @@ const TripResult = () => {
         }
       });
     });
+  };
+
+  const setMapBoundsForDay = (dayEvents) => {
+    const bounds = new window.kakao.maps.LatLngBounds();
+    dayEvents.forEach(event => {
+      if (event.lat && event.lng) {
+        bounds.extend(new window.kakao.maps.LatLng(event.lat, event.lng));
+      }
+    });
+    mapRef.current.setBounds(bounds);
   };
 
   const addMarkersToMap = useCallback((locations) => {
@@ -104,7 +94,7 @@ const TripResult = () => {
   }, []);
 
   useEffect(() => {
-    if (!isMapLoaded || mapRef.current) return;
+    if (!isMapLoaded || !tripData) return;
 
     const initializeMap = () => {
       const container = document.getElementById('map');
@@ -114,27 +104,21 @@ const TripResult = () => {
       }
 
       mapRef.current = new window.kakao.maps.Map(container, {
-        center: new window.kakao.maps.LatLng(mapCenter.lat, mapCenter.lng),
-        level: 3,
+        center: new window.kakao.maps.LatLng(35.9078, 127.7669),
+        level: 13,
       });
+
+      if (tripData[`Day ${currentDay}`]) {
+        addMarkersToMap(tripData[`Day ${currentDay}`]);
+        setMapBoundsForDay(tripData[`Day ${currentDay}`]);
+      }
     };
 
     initializeMap();
-  }, [isMapLoaded, mapCenter]);
-
-  useEffect(() => {
-    if (mapRef.current && tripData && tripData[`Day ${currentDay}`]) {
-      addMarkersToMap(tripData[`Day ${currentDay}`]);
-    }
-  }, [tripData, currentDay, addMarkersToMap]);
+  }, [isMapLoaded, tripData, currentDay, addMarkersToMap]);
 
   const handleDayChange = (dayIndex) => {
     setCurrentDay(dayIndex);
-    const firstEvent = tripData && tripData[`Day ${dayIndex}`] && tripData[`Day ${dayIndex}`][0];
-    if (firstEvent && firstEvent.lat && firstEvent.lng) {
-      setMapCenter({ lat: firstEvent.lat, lng: firstEvent.lng });
-      mapRef.current.setCenter(new window.kakao.maps.LatLng(firstEvent.lat, firstEvent.lng));
-    }
   };
 
   const handleEditClick = (index, field) => {
@@ -143,8 +127,39 @@ const TripResult = () => {
     setEditedEvent({ ...tripData[`Day ${currentDay}`][index] });
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = async (field, value) => {
     setEditedEvent((prev) => ({ ...prev, [field]: value }));
+
+    if (field === 'place' && value) {
+      const places = new window.kakao.maps.services.Places();
+      places.keywordSearch(value, (results, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          setSearchResults(results.slice(0, 3));
+        } else {
+          setSearchResults([]);
+        }
+      });
+    }
+  };
+
+  const handlePlaceSelect = (selectedPlace) => {
+    const { place_name, y: lat, x: lng, address_name } = selectedPlace;
+    setEditedEvent({ ...editedEvent, place: place_name });
+    
+    setTripData((prevData) => {
+      const updatedData = { ...prevData };
+      updatedData[`Day ${currentDay}`][editIndex] = {
+        ...editedEvent,
+        place: place_name,
+        address: address_name,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng)
+      };
+      return updatedData;
+    });
+  
+    setMapBoundsForDay(tripData[`Day ${currentDay}`]);
+    setSearchResults([]);
   };
 
   const handleBlur = (index) => {
@@ -153,6 +168,7 @@ const TripResult = () => {
     setTripData(updatedTripData);
     setEditIndex(null);
     setEditField(null);
+    setSearchResults([]);
   };
 
   if (!tripData) return <div></div>;
@@ -180,44 +196,58 @@ const TripResult = () => {
           ))}
         </div>
 
-        {(tripData[`Day ${currentDay}`] || []).map((event, index) => (
-          <div key={index} className="event-item">
-            {editIndex === index && editField === 'time' ? (
-              <input
-                type="text"
-                value={editedEvent.time}
-                onChange={(e) => handleInputChange('time', e.target.value)}
-                onBlur={() => handleBlur(index)}
-                className="inline-edit-input time-input"
-                autoFocus
-              />
-            ) : (
-              <span
-                onClick={() => handleEditClick(index, 'time')}
-                className="editable-text"
-              >
-                {event.time}
-              </span>
-            )}
-            {editIndex === index && editField === 'place' ? (
-              <input
-                type="text"
-                value={editedEvent.place}
-                onChange={(e) => handleInputChange('place', e.target.value)}
-                onBlur={() => handleBlur(index)}
-                className="inline-edit-input place-input"
-                autoFocus
-              />
-            ) : (
-              <span
-                onClick={() => handleEditClick(index, 'place')}
-                className="editable-text"
-              >
-                {event.place}
-              </span>
-            )}
-          </div>
-        ))}
+        <div className="trip-details-list">
+          {(tripData[`Day ${currentDay}`] || []).map((event, index) => (
+            <div key={index} className="event-item">
+              {editIndex === index && editField === 'time' ? (
+                <input
+                  type="text"
+                  value={editedEvent.time}
+                  onChange={(e) => handleInputChange('time', e.target.value)}
+                  onBlur={() => handleBlur(index)}
+                  className="inline-edit-input time-input"
+                  autoFocus
+                />
+              ) : (
+                <span
+                  onClick={() => handleEditClick(index, 'time')}
+                  className="editable-text"
+                >
+                  {event.time}
+                </span>
+              )}
+
+              {editIndex === index && editField === 'place' ? (
+                <div style={{ position: 'relative', width: '100%' }}>
+                  <input
+                    type="text"
+                    value={editedEvent.place}
+                    onChange={(e) => handleInputChange('place', e.target.value)}
+                    onBlur={() => handleBlur(index)}
+                    className="inline-edit-input place-input"
+                    autoFocus
+                  />
+                  {searchResults.length > 0 && (
+                    <div className="search-results">
+                      {searchResults.map((result, idx) => (
+                        <div key={idx} onClick={() => handlePlaceSelect(result)} className="search-result-item">
+                          {result.place_name} - {result.address_name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <span
+                  onClick={() => handleEditClick(index, 'place')}
+                  className="editable-text"
+                >
+                  {event.place}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

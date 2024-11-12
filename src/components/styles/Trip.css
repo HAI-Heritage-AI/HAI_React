@@ -7,7 +7,7 @@
     padding-top: 60px; /* 상단 컨테이너 여백 */
     padding-bottom: 80px; /* 하단 내비게이션 바 여백 */
     background-color: #f4faff;
-    min-height: 100vh;
+    min-height: 80vh;
     font-family: 'Arial', sans-serif;
     position: relative;
 }

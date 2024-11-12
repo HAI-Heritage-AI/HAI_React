@@ -2,6 +2,10 @@
   padding: 20px;
   font-family: 'Pretendard', sans-serif;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  height: 87vh; /* 전체 화면 높이에 맞춤 */
+  overflow: hidden; /* 전체 페이지 스크롤 방지 */
 }
 
 .search-input {
@@ -16,7 +20,7 @@
 }
 
 .map-container {
-  height: 250px;
+  height: 220px; /* 고정된 높이 설정 */
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 20px;
@@ -26,8 +30,8 @@
 .day-selector {
   display: flex;
   justify-content: space-around;
-  margin: 10px 0;
-  background-color: #f5f5f7;
+  margin-bottom: 10px;
+  background-color: #ffffff;
   padding: 10px 0;
   border-radius: 24px;
 }
@@ -39,15 +43,17 @@
   color: #333;
   font-weight: bold;
   font-size: 14px;
-  border: none;
-  cursor: pointer;
+  border: 1px solid #141C74; /* 버튼마다 테두리 추가 */
   border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  margin: 0 4px; /* 버튼 사이 간격 추가 */
 }
 
 .day-button.active {
   background-color: #3b82f6;
   color: white;
-  border-radius: 15px;
+  border: 1px solid #3b82f6; /* 활성화된 버튼 테두리 색상 */
 }
 
 .trip-details {
@@ -55,7 +61,24 @@
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+  overflow-y: auto; /* 일정 리스트만 스크롤 가능하도록 설정 */
+  -ms-overflow-style: none;  /* IE와 Edge에서 스크롤바 숨기기 */
+  scrollbar-width: none;  /* Firefox에서 스크롤바 숨기기 */
 }
+
+.trip-details-list {
+  max-height: 43vh; /* 리스트가 일정 높이 이상으로 넘치지 않도록 설정 */
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE와 Edge에서 스크롤바 숨기기 */
+  scrollbar-width: none;  /* Firefox에서 스크롤바 숨기기 */
+}
+
+/* Chrome, Safari, Edge에서 스크롤바 완전히 숨기기 */
+.trip-details-list::-webkit-scrollbar {
+  display: none;
+}
+
 
 .event-item {
   display: flex;
@@ -87,18 +110,15 @@
   color: inherit;
 }
 
-/* 시간 입력창을 좁게 설정 */
 .time-input {
   width: 50px;
   text-align: center;
 }
 
-/* 장소 입력창을 더 넓게 설정 */
 .place-input {
   width: 100%;
 }
 
-/* 마커 스타일 */
 .marker {
   display: flex;
   align-items: center;
@@ -114,44 +134,25 @@
   z-index: 1000;
 }
 
-/* 상단 날짜 선택 버튼 디자인 */
-.date-range-selector {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 12px;
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  z-index: 100;
 }
 
-.date-button {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 16px;
+.search-result-item {
   padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #333;
-  margin: 0 5px;
   cursor: pointer;
 }
 
-.date-button.active {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-}
-
-.day-selector-container {
-  display: flex;
-  justify-content: center;
-  margin: 16px 0;
-  gap: 10px;
-}
-
-.trip-details h2 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.trip-details .event-icon {
-  margin-right: 8px;
+.search-result-item:hover {
+  background-color: #f5f5f7;
 }
