@@ -25,7 +25,7 @@
 }
 
 .user {
-  background-color: #d9e7f4; /* 사용자 메시지 배경 색상 */
+  background-color: #FFFBE3; /* 사용자 메시지 배경 색상 */
   align-self: flex-end;
   text-align: right;
   margin-left: auto;
@@ -34,7 +34,7 @@
 }
 
 .bot {
-  background-color: #e8f0f8; /* 챗봇 메시지 배경 색상 */
+  background-color: #E6F2F5; /* 챗봇 메시지 배경 색상 */
   align-self: flex-start;
   text-align: left;
   margin-right: auto;
