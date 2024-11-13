@@ -3,7 +3,7 @@
   font-size: 32px;  /* 햄버거 메뉴 크기 조정 */
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: 0px;
 }
 
 .menu-overlay {

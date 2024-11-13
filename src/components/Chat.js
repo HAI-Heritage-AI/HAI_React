@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './styles/Chat.css';
 import sendIcon from '../assets/chatbutton.png';
 
 function Chat() {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
+  const messagesEndRef = useRef(null);
 
   const handleInputChange = (e) => {
     setMessage(e.target.value);
@@ -22,14 +23,14 @@ function Chat() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ input_text: message }),  // JSON 형식으로 감싸서 전송
+        body: JSON.stringify({ input_text: message }),
       })
         .then((response) => response.json())
         .then((data) => {
           const botMessage = { text: data.response, sender: 'bot' };
           setMessages((prevMessages) => [...prevMessages, botMessage]);
         })
-        .catch((error) => console.error("Error:", error));      
+        .catch((error) => console.error("Error:", error));
     }
   };
 
@@ -39,6 +40,11 @@ function Chat() {
     }
   };
 
+  // 새 메시지가 추가될 때마다 스크롤을 최신 메시지로 이동
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
     <div className="chat-container">
       <div className="chat-messages">
@@ -47,6 +53,7 @@ function Chat() {
             {msg.text}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <div className="chat-input-container">
         <input
