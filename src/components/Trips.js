@@ -133,7 +133,7 @@ function Trips() {
       {step === 5 && (
         <div className="trip-radio-group">
           <h2 className="trip-subheader">여행 스타일이 어떻게 되세요?</h2>
-          {['휴양', '액티비티', '식도락', '쇼핑', 'SNS 감성'].map(style => (
+          {['국가유산', '휴양', '액티비티', '식도락', '쇼핑', 'SNS감성'].map(style => (
             <button key={style} className="trip-radio-button" onClick={() => handleInputChange('style', style)}>{style}</button>
           ))}
           <input

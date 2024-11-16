@@ -33,7 +33,10 @@ function BottomNavigation() {
         <img src={tripsIcon} className="icon" alt="Trips Icon" />
         <span>Trips</span>
       </Link>
-      <Link to="/profile" className={`nav-item ${location.pathname === '/profile' ? 'active' : ''}`}>
+      <Link to="/profile" className={`nav-item ${
+          location.pathname.includes('/profile') ||location.pathname === '/auth' ? 'active' : ''
+        }`}
+      >
         <img src={profileIcon} className="icon" alt="Profile Icon" />
         <span>Profile</span>
       </Link>
