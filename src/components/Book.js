@@ -131,8 +131,12 @@ function Book() {
       </div>
 
       <div className="heritage-grid">
-        {displayedData.map((item, index) => (
-          <BookHeritageCard key={item.ccbaAsno || index} item={item} onClick={handleCardClick} />
+        {displayedData.map((item) => (
+          <BookHeritageCard
+            key={item.id} // Primary Key 사용
+            item={item}
+            onClick={handleCardClick} // 클릭 시 handleCardClick 호출
+          />
         ))}
       </div>
 

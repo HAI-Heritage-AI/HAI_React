@@ -1,47 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import './styles/HeritageDetail.css';
-import nationalHeritageData from './national_heritage_full_data.json'; // JSON 데이터 불러오기
 
 function HeritageDetail() {
-  const { id } = useParams(); // URL에서 ID 가져오기
+  const { id } = useParams(); // URL에서 id 가져오기
   const [heritage, setHeritage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 유산 데이터를 ID 기반으로 검색
+  // API를 통해 ID 기반으로 데이터 가져오기
   useEffect(() => {
-    const selectedHeritage = nationalHeritageData.find(item => item.ccbaAsno === parseInt(id));
-    setHeritage(selectedHeritage);
+    console.log("Fetched ID from URL:", id); // ID 확인
+    const fetchHeritageById = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`http://127.0.0.1:8000/api/book/heritage/${id}`); // ID 기반 API 호출
+        setHeritage(response.data); // API 응답 데이터를 상태에 저장
+      } catch (error) {
+        console.error("유산 데이터를 가져오는 중 오류가 발생했습니다:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHeritageById();
   }, [id]);
 
-  if (!heritage) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (!heritage || heritage.error) {
+    return <div>유산 데이터를 찾을 수 없습니다.</div>;
   }
 
   return (
     <div className="heritage-detail-container">
       <div className="image-section">
-        {heritage.imageUrl ? (
-          <img src={heritage.imageUrl} alt={heritage.ccbaMnm1} />
+        {heritage.imageurl ? (
+          <img src={heritage.imageurl} alt={heritage.ccbamnm1} />
         ) : (
           <span>이미지 없음</span>
         )}
       </div>
       <div className="heritage-info">
         <h1>
-          {heritage.ccbaMnm1}
-          <span className="sub-text">({heritage.ccbaMnm2})</span> {/* 한자 이름을 한글 이름 아래에 표시 */}
+          {heritage.ccbamnm1}
+          <span className="sub-text">({heritage.ccbamnm2})</span> {/* 한자 이름 표시 */}
         </h1>
         <p>
-          <strong>소재지:</strong> {heritage.ccbaLcad}
+          <strong>소재지:</strong> {heritage.ccbalcad}
         </p>
         <div className="heritage-content-box">
-          <p>{heritage.content}</p> {/* content를 박스에 넣어 스크롤 가능하게 함 */}
+          <p>{heritage.content}</p> {/* content를 스크롤 가능한 박스에 표시 */}
         </div>
       </div>
     </div>
   );
-  
-  
 }
 
 export default HeritageDetail;
