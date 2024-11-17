@@ -8,7 +8,7 @@ function Profile() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch("http://localhost:8000/profile", {
+      fetch("http://localhost:8000/api/auth/profile", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -18,7 +18,7 @@ function Chat() {
       setMessage('');
 
       // FastAPI 서버에 메시지 전송
-      fetch("http://localhost:8000/api/chatbot", {
+      fetch("http://localhost:8000/api/chatbot/chatbot", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

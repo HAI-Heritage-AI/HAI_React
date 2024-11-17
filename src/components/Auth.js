@@ -22,8 +22,8 @@ function Auth() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const url = isLogin
-      ? "http://localhost:8000/token"
-      : "http://localhost:8000/register";
+      ? "http://localhost:8000/api/auth/token"
+      : "http://localhost:8000/api/auth/register";
 
     const data = isLogin
       ? new URLSearchParams({ username: email, password: password })
