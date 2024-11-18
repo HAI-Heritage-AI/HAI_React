@@ -96,7 +96,7 @@ function Trips() {
       {step === 2 && (
         <div className="trip-radio-group">
           <h2 className="trip-subheader">연령이 어떻게 되세요?</h2>
-          {['10대', '20대', '30대', '40대', '50대', '60대 이상'].map(age => (
+          {['10대', '20대', '30대', '40대', '50대', '60대이상'].map(age => (
             <button key={age} className="trip-radio-button" onClick={() => handleInputChange('age', age)}>{age}</button>
           ))}
         </div>
