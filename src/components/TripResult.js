@@ -1,16 +1,27 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import './styles/TripResult.css';
+import chatIcon from "../assets/chat.svg";
+import ChatBox from "./ChatBox";
+import FestivalList from "./FestivalList"; // FestivalList 추가
 
 const TripResult = () => {
+  const location = useLocation();
   const [tripData, setTripData] = useState(null);
-  const [currentDay, setCurrentDay] = useState(1);
+  const [festivalData, setFestivalData] = useState([]); // 축제 데이터 상태 추가
+  const [currentDay, setCurrentDay] = useState("Day 1"); // 문자열로 초기 설정
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [editField, setEditField] = useState(null);
   const [editedEvent, setEditedEvent] = useState({ time: '', place: '' });
   const [searchResults, setSearchResults] = useState([]);
+  const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
   const markersRef = useRef([]);
   const mapRef = useRef(null);
+  const chatBoxRef = useRef(null); // ChatBox DOM 참조
+
+  // 서버에 요청을 한 번만 보내도록 제어하기 위한 상태 추가
+  const [hasFetchedTripData, setHasFetchedTripData] = useState(false);
 
   useEffect(() => {
     const checkKakaoMapLoad = () => {
@@ -23,35 +34,87 @@ const TripResult = () => {
     checkKakaoMapLoad();
   }, []);
 
+  // 좌표 정보를 각 이벤트에 추가하는 함수 (useCallback으로 감싸기)
+  const addCoordinatesToEvents = useCallback(async (formattedData) => {
+    const updatedData = await Promise.all(
+      Object.entries(formattedData).map(async ([day, events]) => {
+        const updatedEvents = await Promise.all(
+          events.map(async (event) => {
+            const coordinates = await getCoordinatesFromAddress(event.address);
+            return { ...event, ...coordinates };
+          })
+        );
+        return { [day]: updatedEvents };
+      })
+    );
+    return Object.assign({}, ...updatedData);
+  }, []);
+
   useEffect(() => {
-    if (!isMapLoaded) return;
+    if (!isMapLoaded || hasFetchedTripData || tripData) return;
 
     const fetchTripData = async () => {
       try {
-        const response = await fetch('/tripData.json');
-        if (!response.ok) throw new Error('Failed to fetch trip data');
+        const formData = location.state?.formData;
+        if (!formData) {
+          console.error("No form data available");
+          return;
+        }
+
+        const response = await fetch('http://127.0.0.1:8000/api/plan/plan', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+          console.error(`Failed to fetch trip data: ${response.status} - ${response.statusText}`);
+          throw new Error('Failed to fetch trip data');
+        }
+
         const data = await response.json();
 
-        const updatedData = await Promise.all(
-          Object.entries(data.result).map(async ([day, events]) => {
-            const updatedEvents = await Promise.all(
-              events.map(async (event) => {
-                const coordinates = await getCoordinatesFromAddress(event.address);
-                return { ...event, ...coordinates };
-              })
-            );
-            return { [day]: updatedEvents };
-          })
-        );
+        // travel_plan 데이터를 받아서 포맷팅하고 tripData 상태에 반영
+        let formattedData = {};
+        if (data.travel_plan) {
+          formattedData = formatServerResponse(data.travel_plan);
+        } else {
+          throw new Error("Invalid response format: missing travel_plan");
+        }
 
-        setTripData(Object.assign({}, ...updatedData));
+        const updatedData = await addCoordinatesToEvents(formattedData);
+        setTripData(updatedData);
+        setFestivalData(data.festivals || []);
+        setHasFetchedTripData(true);
       } catch (error) {
         console.error("Error loading trip data:", error);
       }
     };
 
     fetchTripData();
-  }, [isMapLoaded]);
+  }, [isMapLoaded, location, addCoordinatesToEvents, tripData, hasFetchedTripData]);
+
+  // 서버에서 받은 데이터를 프론트에서 사용하기 쉽게 가공하는 함수
+  const formatServerResponse = (serverData) => {
+    const formattedData = {};
+    for (const [day, events] of Object.entries(serverData)) {
+      if (!Array.isArray(events)) {
+        console.error(`Invalid events data for ${day}: expected array but got`, events);
+        continue;
+      }
+      formattedData[day] = events.map(event => {
+        return {
+          time: event.time,
+          place: event.place.장소,
+          address: event.place.address,
+        };
+      });
+    }
+    console.log("Formatted Data:", formattedData); // 여기에서 데이터가 올바르게 포맷되었는지 확인
+    return formattedData;
+  };
 
   const getCoordinatesFromAddress = async (address) => {
     return new Promise((resolve) => {
@@ -108,23 +171,28 @@ const TripResult = () => {
         level: 13,
       });
 
-      if (tripData[`Day ${currentDay}`]) {
-        addMarkersToMap(tripData[`Day ${currentDay}`]);
-        setMapBoundsForDay(tripData[`Day ${currentDay}`]);
+      if (tripData[currentDay]) {
+        addMarkersToMap(tripData[currentDay]);
+        setMapBoundsForDay(tripData[currentDay]);
       }
     };
 
     initializeMap();
   }, [isMapLoaded, tripData, currentDay, addMarkersToMap]);
 
-  const handleDayChange = (dayIndex) => {
-    setCurrentDay(dayIndex);
+  // 현재 날짜 선택 시 처리
+  const handleDayChange = (dayKey) => {
+    setCurrentDay(dayKey);
+    if (tripData[dayKey]) {
+      addMarkersToMap(tripData[dayKey]);
+      setMapBoundsForDay(tripData[dayKey]);
+    }
   };
 
   const handleEditClick = (index, field) => {
     setEditIndex(index);
     setEditField(field);
-    setEditedEvent({ ...tripData[`Day ${currentDay}`][index] });
+    setEditedEvent({ ...tripData[currentDay][index] });
   };
 
   const handleInputChange = async (field, value) => {
@@ -145,10 +213,10 @@ const TripResult = () => {
   const handlePlaceSelect = (selectedPlace) => {
     const { place_name, y: lat, x: lng, address_name } = selectedPlace;
     setEditedEvent({ ...editedEvent, place: place_name });
-    
+
     setTripData((prevData) => {
       const updatedData = { ...prevData };
-      updatedData[`Day ${currentDay}`][editIndex] = {
+      updatedData[currentDay][editIndex] = {
         ...editedEvent,
         place: place_name,
         address: address_name,
@@ -157,30 +225,45 @@ const TripResult = () => {
       };
       return updatedData;
     });
-  
-    setMapBoundsForDay(tripData[`Day ${currentDay}`]);
+
+    setMapBoundsForDay(tripData[currentDay]);
     setSearchResults([]);
   };
 
   const handleBlur = (index) => {
     const updatedTripData = { ...tripData };
-    updatedTripData[`Day ${currentDay}`][index] = editedEvent;
+    updatedTripData[currentDay][index] = editedEvent;
     setTripData(updatedTripData);
     setEditIndex(null);
     setEditField(null);
     setSearchResults([]);
   };
 
-  if (!tripData) return <div></div>;
+  const toggleChatBox = () => {
+    setIsChatBoxOpen((prev) => !prev);
+  };
+
+  // ChatBox 외부 클릭 시 채팅창 닫기
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (chatBoxRef.current && !chatBoxRef.current.contains(event.target)) {
+        setIsChatBoxOpen(false);
+      }
+    };
+
+    // 외부 클릭 감지 이벤트 리스너 등록
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [chatBoxRef]);
+
+  if (!tripData) return <div>여행 계획을 로드하는 중입니다...</div>;
 
   return (
     <div className="trip-result-container">
-      <input
-        type="text"
-        placeholder="여행 플래너 에이전트에게 무엇이든 질문해보세요"
-        className="search-input"
-      />
-
       <div id="map" className="map-container"></div>
 
       <div className="trip-details">
@@ -188,16 +271,16 @@ const TripResult = () => {
           {tripData && Object.keys(tripData).map((day, index) => (
             <button
               key={index}
-              onClick={() => handleDayChange(index + 1)}
-              className={`day-button ${index + 1 === currentDay ? 'active' : ''}`}
+              onClick={() => handleDayChange(day)}
+              className={`day-button ${day === currentDay ? 'active' : ''}`}
             >
-              Day {index + 1}
+              {day}
             </button>
           ))}
         </div>
 
         <div className="trip-details-list">
-          {(tripData[`Day ${currentDay}`] || []).map((event, index) => (
+          {(tripData[currentDay] || []).map((event, index) => (
             <div key={index} className="event-item">
               {editIndex === index && editField === 'time' ? (
                 <input
@@ -249,6 +332,20 @@ const TripResult = () => {
           ))}
         </div>
       </div>
+
+      {/* 축제 리스트 표시 */}
+      <FestivalList festivals={festivalData} />
+
+      {/* 오른쪽 하단 채팅 아이콘 */}
+      <div className="chat-icon" onClick={toggleChatBox}>
+        <img src={chatIcon} alt="Chat Icon" className="chat-icon-image" />
+      </div>
+
+      {isChatBoxOpen && (
+        <div ref={chatBoxRef}>
+          <ChatBox tripData={tripData} /> 
+        </div>
+      )}
     </div>
   );
 };

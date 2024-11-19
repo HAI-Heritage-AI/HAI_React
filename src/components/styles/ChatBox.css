@@ -1,0 +1,127 @@
+.chatbox-container {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  height: 480px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f4faff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.chatbox-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: calc(100vh - 180px);
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+}
+
+.chatbox-messages::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-message {
+  display: inline-block;
+  margin: 6px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  max-width: 80%; /* 버블의 최대 너비를 80%로 설정 */
+  line-height: 1.4;
+  word-wrap: break-word;
+  font-size: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-message.user {
+  background-color: #FFFBE3; /* 사용자 메시지: 밝은 노란색 */
+  align-self: flex-end; /* 오른쪽 정렬 */
+  text-align: right;
+  margin-left: auto; /* 메시지가 오른쪽에 붙도록 설정 */
+  border-bottom-right-radius: 0; /* 사용자 메시지 하단 오른쪽 모서리 반올림 제거 */
+}
+
+.chat-message.bot {
+  background-color: #E6F2F5; /* 챗봇 메시지: 밝은 파란색 */
+  align-self: flex-start; /* 왼쪽 정렬 */
+  text-align: left;
+  margin-right: auto; /* 메시지가 왼쪽에 붙도록 설정 */
+  border-bottom-left-radius: 0; /* 챗봇 메시지 하단 왼쪽 모서리 반올림 제거 */
+}
+
+.chatbox-input {
+  display: flex;
+  padding: 10px;
+  background-color: #f4faff;
+  border-top: 1px solid #e8f0f8;
+}
+
+.chatbox-input input {
+  flex-grow: 1;
+  padding: 6px;
+  border: 1px solid #e8f0f8;
+  border-radius: 20px;
+  font-size: 12px;
+  background-color: #ffffff;
+  outline: none;
+  margin-right: 10px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chatbox-input input:focus {
+  border-color: #98a8af;
+  box-shadow: 0 0 3px rgba(142, 202, 230, 0.5);
+}
+
+.chatbox-input button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #e8f0f8;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.05s ease;
+}
+
+.chatbox-input button:hover {
+  background-color: #c7e3f0;
+}
+
+.chatbox-input button:active {
+  background-color: #a0d8ef;
+}
+
+/* 오른쪽 하단 채팅 아이콘 */
+.chat-icon {
+  position: fixed;
+  bottom: 85px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #007bff; /* 배경을 파란색으로 설정 */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.chat-icon:hover {
+  background-color: #0056b3; /* 호버 시 더 어두운 파란색 */
+}
+
+.chat-icon-image {
+  width: 30px; /* 아이콘 크기 */
+  height: 30px;
+  filter: brightness(0) invert(1); /* 강제로 색상을 흰색으로 변경 */
+}

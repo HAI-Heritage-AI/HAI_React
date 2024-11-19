@@ -1,0 +1,48 @@
+.festival-list-container {
+  background-color: #ffffff;
+  border: 1px solid #d3d3d3;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.festival-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.festival-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.festival-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #ccc;
+}
+
+.festival-item:last-child {
+  border-bottom: none;
+}
+
+.festival-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+}
+
+.festival-date,
+.festival-location,
+.festival-description {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
